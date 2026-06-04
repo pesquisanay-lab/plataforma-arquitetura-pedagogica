@@ -9,8 +9,8 @@ st.set_page_config(page_title="Lab IA - Investigação Científica", page_icon="
 
 # Cabeçalho customizado e colorido
 st.markdown("""
-    <h1 style='text-align: center; color: #2E86C1;'>🔬 Laboratório de Investigação com IA 🧬</h1>
-    <h4 style='text-align: center; color: #5D6D7E;'>Projeto de Arquitetura Pedagógica - Explorando a Ciência com Inteligência Artificial</h4>
+    <h1 style='text-align: center; color: #2E86C1;'>🔬 Laboratório de Investigação com IAGen 🧬</h1>
+    <h4 style='text-align: center; color: #5D6D7E;'>Projeto de Arquitetura Pedagógica - Explorando a Ciência com Inteligência Artificial Generativa</h4>
     <hr>
 """, unsafe_allow_html=True)
 
@@ -37,7 +37,7 @@ dinamica = st.sidebar.selectbox(
     "1️⃣ Selecione a Missão atual:",
     ["1. Auditoria de Fontes", "2. Caçador de Mitos Científicos", "3. Transposição Criativa"]
 )
-ia_escolhida = st.sidebar.radio("2️⃣ Qual 'Cérebro' você vai interrogar?", ["Gemini (Google)", "Llama 3 (Meta)"])
+ia_escolhida = st.sidebar.radio("2️⃣ Qual IAGen você vai interrogar?", ["Gemini (Google)", "Llama 3 (Meta)"])
 
 # Dicionários de conteúdo para as abas
 explicacoes = {
