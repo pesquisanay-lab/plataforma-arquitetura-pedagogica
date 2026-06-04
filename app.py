@@ -20,7 +20,7 @@ except:
 # 3. Inicialização das Inteligências Artificiais
 client_openai = OpenAI(api_key=OPENAI_API_KEY)
 genai.configure(api_key=GEMINI_API_KEY)
-model_gemini = genai.GenerativeModel('gemini-1.5-flash')
+model_gemini = genai.GenerativeModel('gemini-pro')
 
 # 4. Menu lateral para controle da dinâmica
 st.sidebar.header("Painel de Controle")
