@@ -21,7 +21,7 @@ except:
 genai.configure(api_key=GEMINI_API_KEY)
 model_gemini = genai.GenerativeModel('gemini-2.5-flash')
 
-# Conexão com o Llama 3 (Meta) através do Groq usando a biblioteca existente
+# Conexão com o Llama 3 (Meta) através do Groq
 client_groq = OpenAI(
     api_key=GROQ_API_KEY,
     base_url="https://api.groq.com/openai/v1"
@@ -35,35 +35,43 @@ dinamica = st.sidebar.selectbox(
 )
 ia_escolhida = st.sidebar.radio("Qual IAGen você vai interrogar?", ["Gemini", "Meta Llama 3"])
 
-# 4.1. Dicionário com as explicações pedagógicas de cada didática
+# 4.1. Dicionário com as explicações e os DESAFIOS DA AULA de cada didática
 explicacoes = {
     "1. Auditoria de Fontes": """
     ### 🔍 Atividade: Auditoria de Fontes
     **Objetivo:** Investigar o rigor e a veracidade das fontes citadas pela Inteligência Artificial.
     
     **Instruções para o Grupo:**
-    1. Solicitem que a IA explique um conceito científico complexo relacionado ao conteúdo da aula.
-    2. Exijam obrigatoriamente que ela cite as **fontes bibliográficas** (autores, livros, artigos ou links) que sustentam essa explicação.
-    3. Analisem criticamente as respostas. Use materiais de apoio ou livros didáticos para verificar se essas fontes realmente existem ou se foram inventadas pela máquina ("alucinação").
+    1. Construam um comando pedindo para a IA explicar o conceito científico do desafio abaixo.
+    2. Exijam obrigatoriamente que ela cite as **fontes bibliográficas** (autores, livros ou links).
+    3. Analisem criticamente se as fontes existem ou se foram inventadas ("alucinação").
+    
+    🚨 **O DESAFIO DA AULA:**
+    A máquina frequentemente confunde ou inventa fontes quando explica a **diferença entre Vacina e Soro Imunológico**. Construam um prompt (comando) testando o conhecimento da IA sobre esse tema e exijam as referências. Depois, sejam rigorosos: auditem essas fontes!
     """,
     
     "2. Caçador de Mitos Científicos": """
     ### 🕵️‍♂️ Atividade: Caçador de Mitos Científicos
-    **Objetivo:** Identificar erros conceituais, vieses ou boatos científicos nas respostas da máquina.
+    **Objetivo:** Identificar erros conceituais e vieses nas respostas da máquina.
     
     **Instruções para o Grupo:**
-    1. Apresentem para a IA um mito científico popular ou uma fake news comum sobre o tema estudado.
-    2. Interroguem a máquina testando a firmeza dos argumentos dela. 
-    3. O desafio do grupo é localizar possíveis falhas na argumentação da IA, contradições conceituais ou momentos em que ela valida uma informação falsa.
+    1. Interroguem a máquina testando a firmeza dos argumentos dela sobre o mito abaixo.
+    2. O desafio do grupo é localizar possíveis falhas na argumentação ou contradições conceituais.
+    
+    🚨 **O DESAFIO DA AULA:**
+    Existe um mito científico muito popular de que **"O homem evoluiu do macaco"**. O desafio do grupo é formular um comando capcioso para a máquina sobre esse assunto. Ela vai reforçar o erro biológico ou vai conseguir explicar o processo evolutivo corretamente? Caçem a resposta!
     """,
     
     "3. Transposição Criativa": """
     ### 🎨 Atividade: Transposição Criativa
-    **Objetivo:** Avaliar a capacidade da IA de reescrever, adaptar e transpor o conhecimento científico para outras linguagens.
+    **Objetivo:** Avaliar a capacidade da IA de transpor o conhecimento científico para outras linguagens sem perder o rigor.
     
     **Instruções para o Grupo:**
-    1. Peçam para a IA explicar um conceito científico rigoroso através de uma linguagem totalmente diferente (ex: uma letra de música, um poema, um roteiro de teatro ou uma explicação para crianças).
-    2. Analisem se a transposição artística feita pela IA manteve a essência correta do conceito científico ou se acabou distorcendo a ciência para fazer a rima/adaptação.
+    1. Peçam para a IA explicar um conceito rigoroso através de uma linguagem artística ou lúdica.
+    2. Analisem se a arte manteve a essência correta ou distorceu a ciência.
+    
+    🚨 **O DESAFIO DA AULA:**
+    O desafio do grupo é pedir para a inteligência artificial explicar **a estrutura do DNA e o papel dos genes** em formato de uma **Batalha de Rima (Rap)** ou um **Poema de Cordel**. Leiam o resultado com atenção: a precisão científica se perdeu no meio da arte ou o conceito se manteve correto?
     """
 }
 
