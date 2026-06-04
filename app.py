@@ -4,10 +4,15 @@ from openai import OpenAI
 import pandas as pd
 from datetime import datetime
 
-# 1. Configuração visual da página
-st.set_page_config(page_title="Investigação Científica - AP", layout="wide")
-st.title("Plataforma de Investigação Científica")
-st.write("Bem-vindo ao ambiente de interação com Inteligências Artificiais Generativas.")
+# 1. Configuração visual da página (Cores, Ícone e Título)
+st.set_page_config(page_title="Lab IA - Investigação Científica", page_icon="🔬", layout="wide")
+
+# Cabeçalho customizado e colorido
+st.markdown("""
+    <h1 style='text-align: center; color: #2E86C1;'>🔬 Laboratório de Investigação com IA 🧬</h1>
+    <h4 style='text-align: center; color: #5D6D7E;'>Projeto de Arquitetura Pedagógica - Explorando a Ciência com Inteligência Artificial</h4>
+    <hr>
+""", unsafe_allow_html=True)
 
 # 2. Leitura segura das chaves de API
 try:
@@ -21,92 +26,101 @@ except:
 genai.configure(api_key=GEMINI_API_KEY)
 model_gemini = genai.GenerativeModel('gemini-2.5-flash')
 
-# Conexão com o Llama 3 (Meta) através do Groq
 client_groq = OpenAI(
     api_key=GROQ_API_KEY,
     base_url="https://api.groq.com/openai/v1"
 )
 
 # 4. Menu lateral para controle da dinâmica
-st.sidebar.header("Painel de Controle")
+st.sidebar.header("🎛️ Painel de Controle")
 dinamica = st.sidebar.selectbox(
-    "Selecione a atividade atual:",
+    "1️⃣ Selecione a Missão atual:",
     ["1. Auditoria de Fontes", "2. Caçador de Mitos Científicos", "3. Transposição Criativa"]
 )
-ia_escolhida = st.sidebar.radio("Qual IAGen você vai interrogar?", ["Gemini", "Meta Llama 3"])
+ia_escolhida = st.sidebar.radio("2️⃣ Qual 'Cérebro' você vai interrogar?", ["Gemini (Google)", "Llama 3 (Meta)"])
 
-# 4.1. Dicionário com as explicações e os DESAFIOS DA AULA de cada didática
+# Dicionários de conteúdo para as abas
 explicacoes = {
     "1. Auditoria de Fontes": """
-    ### 🔍 Atividade: Auditoria de Fontes
-    **Objetivo:** Investigar o rigor e a veracidade das fontes citadas pela Inteligência Artificial.
-    
-    **Instruções para o Grupo:**
-    1. Construam um comando pedindo para a IA explicar o conceito científico do desafio abaixo.
-    2. Exijam obrigatoriamente que ela cite as **fontes bibliográficas** (autores, livros ou links).
-    3. Analisem criticamente se as fontes existem ou se foram inventadas ("alucinação").
+    ### 🔍 Missão: Auditoria de Fontes
+    **Objetivo:** A IA parece muito inteligente, mas ela inventa informações para tentar te agradar (isso se chama "alucinação"). Sua missão é interrogá-la e exigir fontes!
     
     🚨 **O DESAFIO DA AULA:**
-    A máquina frequentemente confunde ou inventa fontes quando explica a **diferença entre Vacina e Soro Imunológico**. Construam um prompt (comando) testando o conhecimento da IA sobre esse tema e exijam as referências. Depois, sejam rigorosos: auditem essas fontes!
+    A máquina frequentemente confunde ou inventa fontes quando explica a **diferença entre Vacina e Soro Imunológico**. Construam um prompt testando a IA sobre esse tema e exijam as referências. Depois, sejam rigorosos: pesquisem no Google se os livros/autores que ela citou realmente existem!
     """,
-    
     "2. Caçador de Mitos Científicos": """
-    ### 🕵️‍♂️ Atividade: Caçador de Mitos Científicos
-    **Objetivo:** Identificar erros conceituais e vieses nas respostas da máquina.
-    
-    **Instruções para o Grupo:**
-    1. Interroguem a máquina testando a firmeza dos argumentos dela sobre o mito abaixo.
-    2. O desafio do grupo é localizar possíveis falhas na argumentação ou contradições conceituais.
+    ### 🕵️‍♂️ Missão: Caçador de Mitos Científicos
+    **Objetivo:** Nem tudo que a máquina fala é verdade absoluta. Sua missão é testar se ela consegue derrubar fake news científicas ou se ela cai na armadilha e concorda com o mito.
     
     🚨 **O DESAFIO DA AULA:**
-    Existe um mito científico muito popular de que **"O homem evoluiu do macaco"**. O desafio do grupo é formular um comando capcioso para a máquina sobre esse assunto. Ela vai reforçar o erro biológico ou vai conseguir explicar o processo evolutivo corretamente? Caçem a resposta!
+    Existe um mito científico muito popular de que **"O homem evoluiu do macaco"**. Formulem um comando capcioso sobre esse assunto. Ela vai reforçar o erro biológico ou vai conseguir explicar o processo evolutivo corretamente? Caçem a resposta!
     """,
-    
     "3. Transposição Criativa": """
-    ### 🎨 Atividade: Transposição Criativa
-    **Objetivo:** Avaliar a capacidade da IA de transpor o conhecimento científico para outras linguagens sem perder o rigor.
-    
-    **Instruções para o Grupo:**
-    1. Peçam para a IA explicar um conceito rigoroso através de uma linguagem artística ou lúdica.
-    2. Analisem se a arte manteve a essência correta ou distorceu a ciência.
+    ### 🎨 Missão: Transposição Criativa
+    **Objetivo:** A ciência não precisa ser chata. Sua missão é fazer a IA explicar algo complexo de um jeito totalmente inusitado, sem perder a verdade científica.
     
     🚨 **O DESAFIO DA AULA:**
-    O desafio do grupo é pedir para a inteligência artificial explicar **a estrutura do DNA e o papel dos genes** em formato de uma **Batalha de Rima (Rap)** ou um **Poema de Cordel**. Leiam o resultado com atenção: a precisão científica se perdeu no meio da arte ou o conceito se manteve correto?
+    Peçam para a inteligência artificial explicar **a estrutura do DNA e o papel dos genes** em formato de uma **Batalha de Rima (Rap)** ou um **Poema de Cordel**. Leiam o resultado: a ciência se perdeu no meio da arte ou o conceito continuou correto?
     """
 }
 
-# Exibe a explicação dinâmica na tela principal dentro de uma caixa destacada
-with st.container():
+# 5. Organização da tela central em 3 ABAS (Tabs)
+aba1, aba2, aba3 = st.tabs(["🚀 A Missão", "📋 Banco de Prompts", "🧠 O que é IAGen?"])
+
+with aba1:
     st.info(explicacoes[dinamica])
 
-# 5. Memória de conversa para coleta de dados
+with aba2:
+    st.success("""
+    ### 📋 Banco de Prompts (Copie, cole e preencha as lacunas)
+    Para falar com a IA, você não faz apenas "perguntas", você dá **comandos estruturados**. Escolha um modelo abaixo de acordo com a sua missão, copie, cole na barra de texto lá embaixo e substitua os espaços em colchetes `[ ]` pelo tema da aula.
+    
+    **Para Auditoria de Fontes:**
+    > "Aja como um professor de biologia de universidade. Explique detalhadamente o conceito de [INSERIR TEMA AQUI]. No final da sua explicação, é obrigatório citar pelo menos 3 fontes bibliográficas reais (livros, artigos ou sites de universidades) que comprovem o que você disse."
+    
+    **Para Caçador de Mitos:**
+    > "Muitas pessoas na internet dizem que [INSERIR MITO AQUI]. Assuma a postura de um cientista cético. Isso é verdade? Explique os erros biológicos dessa afirmação usando argumentos científicos de forma simples para um aluno do 9º ano."
+    
+    **Para Transposição Criativa:**
+    > "Você é um artista genial que adora ciências. Crie um(a) [ESCOLHA: Letra de Rap / Cordel / Conto de Fadas] que explique perfeitamente como funciona [INSERIR TEMA AQUI]. Use termos científicos reais, mas faça isso rimar de um jeito muito criativo!"
+    """)
+
+with aba3:
+    st.warning("""
+    ### 🧠 O que é uma Inteligência Artificial Generativa?
+    A IAGen (como o ChatGPT, Gemini ou Llama) não é um site de buscas como o Google. Ela não procura textos prontos. Ela funciona como um "papagaio virtual" super inteligente, treinado com bilhões de textos da internet. 
+    
+    **Como ela funciona?** Ela adivinha qual é a próxima palavra mais provável de aparecer numa frase. 
+    
+    **O grande perigo:** Como ela quer apenas juntar palavras que combinam, muitas vezes ela escreve coisas que parecem lindas e super corretas, mas que cientificamente estão erradas. Ela não pensa, ela gera texto. Por isso, **o humano (você)** precisa ser o auditor crítico de tudo o que ela produz!
+    """)
+
+# 6. Memória de conversa para coleta de dados
 if "mensagens" not in st.session_state:
     st.session_state.mensagens = []
+
+st.markdown("---")
+st.markdown("### 💬 Chat do Laboratório")
 
 for msg in st.session_state.mensagens:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
 
-# 6. Interação do aluno e envio do comando
-prompt = st.chat_input("Digite o comando estruturado aqui...")
+# 7. Interação do aluno e envio do comando
+prompt = st.chat_input("Copie um prompt do banco acima, cole aqui e altere o tema...")
 
 if prompt:
-    # Registra e exibe o que o aluno digitou
+    # Registra o comando
     with st.chat_message("user"):
         st.markdown(prompt)
     
-    st.session_state.mensagens.append({
-        "role": "user", 
-        "content": prompt, 
-        "ia_utilizada": ia_escolhida, 
-        "dinamica": dinamica, 
-        "horario": str(datetime.now())
-    })
+    st.session_state.mensagens.append({"role": "user", "content": prompt, "ia_utilizada": ia_escolhida, "dinamica": dinamica, "horario": str(datetime.now())})
 
-    # Processa a resposta da IAGen escolhida
+    # Processa a resposta
     with st.chat_message("assistant"):
         resposta_texto = ""
-        if ia_escolhida == "Meta Llama 3":
+        # Ajuste de nome para bater com o menu lateral
+        if ia_escolhida == "Llama 3 (Meta)":
             try:
                 response = client_groq.chat.completions.create(
                     model="llama-3.1-8b-instant",
@@ -126,22 +140,16 @@ if prompt:
     
     # Registra a resposta da máquina
     if resposta_texto:
-        st.session_state.mensagens.append({
-            "role": "assistant", 
-            "content": resposta_texto, 
-            "ia_utilizada": ia_escolhida, 
-            "dinamica": dinamica, 
-            "horario": str(datetime.now())
-        })
+        st.session_state.mensagens.append({"role": "assistant", "content": resposta_texto, "ia_utilizada": ia_escolhida, "dinamica": dinamica, "horario": str(datetime.now())})
 
-# 7. Exportação de dados para o pesquisador
+# 8. Exportação de dados para o pesquisador
 if st.session_state.mensagens:
     st.sidebar.markdown("---")
-    st.sidebar.subheader("Coleta de Dados")
+    st.sidebar.subheader("📥 Coleta de Dados")
     df = pd.DataFrame(st.session_state.mensagens)
     csv = df.to_csv(index=False).encode('utf-8')
     st.sidebar.download_button(
-        label="Baixar Registros (CSV)",
+        label="Baixar Relatório da Aula (CSV)",
         data=csv,
         file_name="dados_arquitetura_pedagogica.csv",
         mime="text/csv",
