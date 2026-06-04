@@ -9,8 +9,8 @@ st.set_page_config(page_title="Lab IA - Investigação Científica", page_icon="
 
 # Cabeçalho customizado e colorido
 st.markdown("""
-    <h1 style='text-align: center; color: #2E86C1;'>🔬 Laboratório de Investigação com IAGen 🧬</h1>
-    <h4 style='text-align: center; color: #5D6D7E;'>Projeto de Arquitetura Pedagógica - Explorando a Ciência com Inteligência Artificial Generativa</h4>
+    <h1 style='text-align: center; color: #2E86C1;'>🔬 Laboratório de Investigação com IA 🧬</h1>
+    <h4 style='text-align: center; color: #5D6D7E;'>Projeto de Arquitetura Pedagógica - Explorando a Ciência com Inteligência Artificial</h4>
     <hr>
 """, unsafe_allow_html=True)
 
@@ -37,9 +37,9 @@ dinamica = st.sidebar.selectbox(
     "1️⃣ Selecione a Missão atual:",
     ["1. Auditoria de Fontes", "2. Caçador de Mitos Científicos", "3. Transposição Criativa"]
 )
-ia_escolhida = st.sidebar.radio("2️⃣ Qual IAGen você vai interrogar?", ["Gemini (Google)", "Llama 3 (Meta)"])
+ia_escolhida = st.sidebar.radio("2️⃣ Qual 'Cérebro' você vai interrogar?", ["Gemini (Google)", "Llama 3 (Meta)"])
 
-# Dicionários de conteúdo para as abas
+# 4.1. Dicionário das Missões (Aba 1)
 explicacoes = {
     "1. Auditoria de Fontes": """
     ### 🔍 Missão: Auditoria de Fontes
@@ -64,6 +64,22 @@ explicacoes = {
     """
 }
 
+# 4.2. Dicionário dos Prompts (Aba 2) - Muda de acordo com a atividade!
+prompts_sugeridos = {
+    "1. Auditoria de Fontes": """
+    **Modelo para Auditoria de Fontes:**
+    > "Aja como um professor de biologia de universidade. Explique detalhadamente o conceito de **[INSERIR TEMA AQUI]**. No final da sua explicação, é obrigatório citar pelo menos 3 fontes bibliográficas reais (livros, artigos ou sites de universidades) que comprovem o que você disse."
+    """,
+    "2. Caçador de Mitos Científicos": """
+    **Modelo para Caçador de Mitos:**
+    > "Muitas pessoas na internet dizem que **[INSERIR MITO AQUI]**. Assuma a postura de um cientista cético. Isso é verdade? Explique os erros biológicos dessa afirmação usando argumentos científicos de forma simples para um aluno do 9º ano."
+    """,
+    "3. Transposição Criativa": """
+    **Modelo para Transposição Criativa:**
+    > "Você é um artista genial que adora ciências. Crie um(a) **[ESCOLHA: Letra de Rap / Cordel / Conto de Fadas]** que explique perfeitamente como funciona **[INSERIR TEMA AQUI]**. Use termos científicos reais, mas faça isso rimar de um jeito muito criativo!"
+    """
+}
+
 # 5. Organização da tela central em 3 ABAS (Tabs)
 aba1, aba2, aba3 = st.tabs(["🚀 A Missão", "📋 Banco de Prompts", "🧠 O que é IAGen?"])
 
@@ -73,17 +89,10 @@ with aba1:
 with aba2:
     st.success("""
     ### 📋 Banco de Prompts (Copie, cole e preencha as lacunas)
-    Para falar com a IA, você não faz apenas "perguntas", você dá **comandos estruturados**. Escolha um modelo abaixo de acordo com a sua missão, copie, cole na barra de texto lá embaixo e substitua os espaços em colchetes `[ ]` pelo tema da aula.
-    
-    **Para Auditoria de Fontes:**
-    > "Aja como um professor de biologia de universidade. Explique detalhadamente o conceito de [INSERIR TEMA AQUI]. No final da sua explicação, é obrigatório citar pelo menos 3 fontes bibliográficas reais (livros, artigos ou sites de universidades) que comprovem o que você disse."
-    
-    **Para Caçador de Mitos:**
-    > "Muitas pessoas na internet dizem que [INSERIR MITO AQUI]. Assuma a postura de um cientista cético. Isso é verdade? Explique os erros biológicos dessa afirmação usando argumentos científicos de forma simples para um aluno do 9º ano."
-    
-    **Para Transposição Criativa:**
-    > "Você é um artista genial que adora ciências. Crie um(a) [ESCOLHA: Letra de Rap / Cordel / Conto de Fadas] que explique perfeitamente como funciona [INSERIR TEMA AQUI]. Use termos científicos reais, mas faça isso rimar de um jeito muito criativo!"
+    Para falar com a IA, você não faz apenas "perguntas", você dá **comandos estruturados**. Copie o modelo abaixo, cole na barra de texto lá embaixo e substitua os espaços em colchetes `[ ]` pelo tema da aula.
     """)
+    # Aqui a mágica acontece: mostra só o prompt da atividade selecionada!
+    st.markdown(prompts_sugeridos[dinamica])
 
 with aba3:
     st.warning("""
@@ -119,7 +128,6 @@ if prompt:
     # Processa a resposta
     with st.chat_message("assistant"):
         resposta_texto = ""
-        # Ajuste de nome para bater com o menu lateral
         if ia_escolhida == "Llama 3 (Meta)":
             try:
                 response = client_groq.chat.completions.create(
