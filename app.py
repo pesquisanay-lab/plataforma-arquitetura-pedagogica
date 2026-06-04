@@ -1,4 +1,3 @@
-
 import streamlit as st
 import google.generativeai as genai
 from openai import OpenAI
@@ -48,8 +47,8 @@ if prompt:
         st.markdown(prompt)
     
     st.session_state.mensagens.append({
-        "papel": "aluno", 
-        "conteudo": prompt, 
+        "role": "user", 
+        "content": prompt, 
         "ia_utilizada": ia_escolhida, 
         "dinamica": dinamica, 
         "horario": str(datetime.now())
@@ -79,8 +78,8 @@ if prompt:
     # Registra a resposta da máquina
     if resposta_texto:
         st.session_state.mensagens.append({
-            "papel": "iagen", 
-            "conteudo": resposta_texto, 
+            "role": "assistant", 
+            "content": resposta_texto, 
             "ia_utilizada": ia_escolhida, 
             "dinamica": dinamica, 
             "horario": str(datetime.now())
