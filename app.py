@@ -65,7 +65,7 @@ if prompt:
         if ia_escolhida == "Meta Llama 3":
             try:
                 response = client_groq.chat.completions.create(
-                    model="llama3-8b-8192",
+                    model="llama-3.1-8b-instant",
                     messages=[{"role": "user", "content": prompt}]
                 )
                 resposta_texto = response.choices[0].message.content
