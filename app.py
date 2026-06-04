@@ -11,16 +11,21 @@ st.write("Bem-vindo ao ambiente de interação com Inteligências Artificiais Ge
 
 # 2. Leitura segura das chaves de API
 try:
-    OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
     GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
+    GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
 except:
     st.warning("Aguardando a configuração das chaves de segurança no servidor.")
     st.stop()
 
 # 3. Inicialização das Inteligências Artificiais
-client_openai = OpenAI(api_key=OPENAI_API_KEY)
 genai.configure(api_key=GEMINI_API_KEY)
 model_gemini = genai.GenerativeModel('gemini-2.5-flash')
+
+# Conexão com o Llama 3 (Meta) através do Groq usando a biblioteca existente
+client_groq = OpenAI(
+    api_key=GROQ_API_KEY,
+    base_url="https://api.groq.com/openai/v1"
+)
 
 # 4. Menu lateral para controle da dinâmica
 st.sidebar.header("Painel de Controle")
@@ -28,7 +33,7 @@ dinamica = st.sidebar.selectbox(
     "Selecione a atividade atual:",
     ["1. Auditoria de Fontes", "2. Caçador de Mitos Científicos", "3. Transposição Criativa"]
 )
-ia_escolhida = st.sidebar.radio("Qual IAGen você vai interrogar?", ["ChatGPT", "Gemini"])
+ia_escolhida = st.sidebar.radio("Qual IAGen você vai interrogar?", ["Gemini", "Meta Llama 3"])
 
 # 5. Memória de conversa para coleta de dados
 if "mensagens" not in st.session_state:
@@ -57,23 +62,23 @@ if prompt:
     # Processa a resposta da IAGen escolhida
     with st.chat_message("assistant"):
         resposta_texto = ""
-        if ia_escolhida == "ChatGPT":
+        if ia_escolhida == "Meta Llama 3":
             try:
-                response = client_openai.chat.completions.create(
-                    model="gpt-3.5-turbo",
+                response = client_groq.chat.completions.create(
+                    model="llama3-8b-8192",
                     messages=[{"role": "user", "content": prompt}]
                 )
                 resposta_texto = response.choices[0].message.content
                 st.markdown(resposta_texto)
             except Exception as e:
-                st.error(f"Erro na comunicação: {e}")
+                st.error(f"Erro na comunicação com a Meta: {e}")
         else:
             try:
                 response = model_gemini.generate_content(prompt)
                 resposta_texto = response.text
                 st.markdown(resposta_texto)
             except Exception as e:
-                st.error(f"Erro na comunicação: {e}")
+                st.error(f"Erro na comunicação com o Gemini: {e}")
     
     # Registra a resposta da máquina
     if resposta_texto:
